@@ -24,6 +24,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'admin_services' %}">
+                             <span class="las la-briefcase"></span>
+                             <small>Services</small>
+                         </a>
+                    </li>
+                    <li>
                        <a href="{% url 'user_list' %}">
                             <span class="las la-user-alt"></span>
                             <small>Users</small>
@@ -76,70 +82,148 @@
             <div class="page-header">
                 <h1>User</h1>
                 <small>Home / User</small>
-            </div>  
-            <div class="records table-responsive">
-                <div class="record-header">
-                    <div class="add">
-                        <button><a href="{% url 'register' %}    ">Add User</a></button>
+            </div>
+            <div class="page-content">
+                <div class="analytics">
+                    <div class="card">
+                        <div class="card-head">
+                            <h2>{{ total_customers }}</h2>
+                            <span class="las la-user-friends"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Total Customer</small>
+                        </div>
                     </div>
-                    <div class="browse">
-                       <input type="search" placeholder="Search" class="record-search" id="search-input">
-                       <select name="category" id="category">
-                        <option value="">All</option>
-                        {% for category in categories %}
-                            <option value="{{ category.category }}">{{ category.category }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="card">
+                        <div class="card-head">
+                            <h2>{{ total_therapists }}</h2>
+                            <span class="las la-user-friends"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Total Therapist</small>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <h2>{{ total_educators }}</h2>
+                            <span class="las la-user-friends"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Total Educator</small>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <h2>{{ total_employees }}</h2>
+                            <span class="las la-user-friends"></span>
+                        </div>
+                        <div class="card-progress">
+                            <small>Total Employee</small>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="records table-responsive">
+                <div class="record-header">
+                    <form method="GET" action="{% url 'user_list' %}"></form>
+                    <div class="input-box">
+                        <i class="las la-search"></i>
+                            <input type="text" name="q" id="search-input" placeholder="Search here..." autocomplete="off" />
+                    </div>
+                    </form>
+                    <div class="filter">
+                        <label for="role_filter">Filter by Role:</label>
+                        <select name="role_filter" id="role_filter">
+                            <option value="">All</option>
+                            <option value="therapist">Therapist</option>
+                            <option value="educator">Educator</option>
+                            <option value="employee">Employee</option>
+                            <option value="customer">Customer</option>
+                        </select>
+                    </div>
+                    <div class="add">
+                        <button><a href="{% url 'add_user' %}    ">Add User</a></button>
+                    </div> 
+                </div>
                 <div>
-                    <table width="100%">
+                    <table width="100%" id="user-table">
                         <thead>
                             <tr>
-                                <th>USERS</th>
-                                <th>PRICE</th>
-                                <th>ISSUED DATE</th>
-                                <th>CATEGORY</th>
+                                <th>USERNAME</th>
+                                <th>NAME</th>
+                                <th>EMAIL</th>
+                                <th>ROLE</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for service in services %}
+                            {% for user in users %}
                             <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
                                 <td>
-                                    <div class="client">
-                                        <div class="client-info">
-                                            <h4>{{ service.name }}</h4>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    {{ service.price }}
-                                </td>
-                                <td>
-                                    19 April, 2022
-                                </td>
-                                <td>
-                                    {{ service.category_id.category }}
+                                    {% if user.is_therapist %}
+                                        Therapist
+                                    {% elif user.is_educator %}
+                                        Educator
+                                    {% elif user.is_employee %}
+                                        Employee
+                                    {% elif user.is_customer %}
+                                        Customer
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <div class="actions">
-                                        <div class="actions">
-                                            <a href="{% url 'delete_service' service.id %}" onclick="return confirm('Are you sure you want to delete this service?');">
+                                        <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure you want to delete this user?');">
                                             <span class="las la-trash"></span></a>
-                                            <a href="{% url 'update_service' service.id %}">
-                                            <span class="las la-edit"></span></a>
-                                            <a href=""><span class="las la-eye"></span></a>
-                                        </div>
+                                        <a href="{% url 'edit_user' user.id %}"><span class="las la-edit"></span></a>
+                                        <a href=""><span class="las la-eye"></span></a>
                                     </div>
                                 </td>
                             </tr>
-                            {% endfor %}                         
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </main> 
     </div>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const roleFilter = document.getElementById('role_filter');
+        const userTable = document.getElementById('user-table');
+        const originalRows = Array.from(userTable.querySelectorAll('tbody tr')); 
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredRows = originalRows.filter(row => {
+                const usernameCell = row.querySelector('td:first-child');
+                const nameCell = row.querySelector('td:nth-child(2)');
+                const username = usernameCell.textContent.toLowerCase();
+                const name = nameCell.textContent.toLowerCase();
+                return username.includes(searchTerm) || name.includes(searchTerm);
+            });
+            userTable.querySelector('tbody').innerHTML = ''; 
+            filteredRows.forEach(row => userTable.querySelector('tbody').appendChild(row));
+        });
+
+        roleFilter.addEventListener('change', () => {
+            const selectedRole = roleFilter.value.toLowerCase();
+            const filteredRows = originalRows.filter(row => {
+                const roleCell = row.querySelector('td:nth-child(4)');
+                const role = roleCell.textContent.trim().toLowerCase();
+                return selectedRole === '' || role === selectedRole;
+            });
+
+            // Clear the table body
+            userTable.querySelector('tbody').innerHTML = '';
+
+            // Re-add the filtered rows to the table
+            filteredRows.forEach(row => userTable.querySelector('tbody').appendChild(row));
+        });
+    </script>
+
 </body>
 </html>

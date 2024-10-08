@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Schedule</title>
+</head>
+<body>
+    <h1>Edit Schedule</h1>
+    <form method="POST" action="{% url 'edit_schedule' schedule.id %}">
+        {% csrf_token %}
+        <label for="educator_id">Educator:</label>
+        <select name="educator_id" id="educator_id">
+            {% for educator in educators %}
+                <option value="{{ educator.id }}" {% if schedule.educator_id.id == educator.id %}selected{% endif %}>{{ educator.username }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="service_id">Service:</label>
+        <select name="service_id" id="service_id">
+            {% for service in services %}
+                <option value="{{ service.id }}" {% if schedule.service_id.id == service.id %}selected{% endif %}>{{ service.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="day">Day:</label>
+        <input type="text" name="day" id="day" value="{{ schedule.day }}">
+
+        <label for="time_start">Start Time:</label>
+        <input type="time" name="time_start" id="time_start" value="{{ schedule.time_start|time:'H:i' }}">
+
+        <label for="time_end">End Time:</label>
+        <input type="time" name="time_end" id="time_end" value="{{ schedule.time_end|time:'H:i' }}">
+
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>
