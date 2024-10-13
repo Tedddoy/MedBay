@@ -19,7 +19,9 @@
         <label for="service_id">Service:</label>
         <select name="service_id" id="service_id">
             {% for service in services %}
-                <option value="{{ service.id }}">{{ service.name }}</option>
+                {% if service.category_id.category == 'Class' %}
+                    <option value="{{ service.id }}">{{ service.name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
 

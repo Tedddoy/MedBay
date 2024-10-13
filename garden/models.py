@@ -8,6 +8,18 @@ class User(AbstractUser):
     is_employee = models.BooleanField('Is employee', default=False)
     is_therapist = models.BooleanField('Is therapist', default=False)
     is_educator = models.BooleanField('Is educator', default=False)
+    birthdate = models.DateField(null=True, blank=True)  # Add birthdate field
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)  # Add profile picture field
+    
+    @property
+    def profile_picture_url(self):
+        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+            return self.profile_picture.url
+        else:
+            return '/path/to/default/picture.jpg'  # specify your default image path here
+        
+    def __str__(self):
+        return self.username
 
 class Category(models.Model):
     category = models.CharField(null=True, max_length=255)
@@ -37,4 +49,21 @@ class Schedule(models.Model):
     time_end = models.TimeField(null=True)
 
     def __str__(self):
-        return f"{self.educator_id.username} - {self.service_id.name} - {self.day} {self.time_start} - {self.time_end}"
+        return f"{self.educator_id.username} - {self.servie_id.name} - {self.day} {self.time_start} - {self.time_end}"
+
+class Appointment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    time = models.TimeField()
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)  # If applicable
+
+    def __str__(self):
+        return f'Appointment for {self.user.username} on {self.date} at {self.time}'
+
+class Resources(models.Model):
+    resource_name = models.CharField(max_length=255)
+    resource_type = models.CharField(max_length=255)
+    availability = models.BooleanField(null=True, default=True)
+
+    def __str__(self):
+        return self.resource_name

@@ -3,155 +3,146 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    <title>Admin Dashboard | Keyframe Effects</title>
-    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'adminstyle.css' %}">
+
+    <title>AdminHub</title>
 </head>
 <body>
-   <input type="checkbox" id="menu-toggle">
-    <div class="sidebar">
-        <div class="side-header">
-            <h3>Med<span>Bay</span></h3>
-        </div>
-        <div class="side-content">
-            <div class="side-menu">
-                <ul>
-                    <li>
-                       <a href="{% url 'adminpage' %}" class="active">
-                            <span class="las la-home"></span>
-                            <small>Dashboard</small>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'admin_services' %}">
-                             <span class="las la-briefcase"></span>
-                             <small>Services</small>
-                         </a>
-                    </li>
-                    <li>
-                       <a href="{% url 'user_list' %}">
-                            <span class="las la-user-alt"></span>
-                            <small>Users</small>
-                        </a>
-                    </li>
-                    <li>
-                       <a href="{% url 'admin_schedule' %}">
-                            <span class="las la-calendar"></span>
-                            <small>Schedule</small>
-                        </a>
-                    </li>
-                    <li>
-                       <a href="">
-                            <span class="las la-clipboard-list"></span>
-                            <small>Projects</small>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    
-    <div class="main-content">
-        <header>
-            <div class="header-content">
-                <label for="menu-toggle">
-                    <span class="las la-bars"></span>
-                </label>
-                <div class="header-menu">
-                    <label for="">
-                        <span class="las la-search"></span>
-                    </label>
-                    <div class="notify-icon">
-                        <span class="las la-envelope"></span>
-                        <span class="notify">4</span>
-                    </div>
-                    <div class="notify-icon">
-                        <span class="las la-bell"></span>
-                        <span class="notify">3</span>
-                    </div>
-                    <div class="user">
-                        <div class="bg-img" style="background-image: url(img/1.jpeg)"></div>
-                        <span class="las la-power-off"></span>
-                        <span>Logout</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">AdminHub</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="{% url 'adminpage' %}">
+                    <i class='bx bxs-dashboard' ></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_services' %}">
+                    <i class='bx bxs-briefcase' ></i>
+                    <span class="text">Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_schedule' %}">
+                    <i class='bx bxs-book-open' ></i>
+                    <span class="text">Classes</span>
+                </a>
+            </li>
+            <li>
+				<a href="">
+					<i class='bx bxs-calendar-check' ></i>
+					<span class="text">Appointments</span>
+				</a>
+			</li>
+            <li class="active">
+                <a href="#">
+                    <i class='bx bxs-user' ></i>
+                    <span class="text">Users</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="#">
+                    <i class='bx bxs-cog' ></i>
+                    <span class="text">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bxs-log-out' ></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <section id="content">
+        <nav>
+            <i class='bx bx-menu' ></i>
+            <a href="#" class="nav-link">Categories</a>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification">
+                <i class='bx bxs-bell' ></i>
+                <span class="num">8</span>
+            </a>
+            <a href="#" class="profile">
+                <img src="img/people.png">
+            </a>
+        </nav>
         <main>
-            <div class="page-header">
-                <h1>User</h1>
-                <small>Home / User</small>
-            </div>
-            <div class="page-content">
-                <div class="analytics">
-                    <div class="card">
-                        <div class="card-head">
-                            <h2>{{ total_customers }}</h2>
-                            <span class="las la-user-friends"></span>
-                        </div>
-                        <div class="card-progress">
-                            <small>Total Customer</small>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <h2>{{ total_therapists }}</h2>
-                            <span class="las la-user-friends"></span>
-                        </div>
-                        <div class="card-progress">
-                            <small>Total Therapist</small>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <h2>{{ total_educators }}</h2>
-                            <span class="las la-user-friends"></span>
-                        </div>
-                        <div class="card-progress">
-                            <small>Total Educator</small>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <h2>{{ total_employees }}</h2>
-                            <span class="las la-user-friends"></span>
-                        </div>
-                        <div class="card-progress">
-                            <small>Total Employee</small>
-                        </div>
-                    </div>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Users</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Users</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right' ></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
                 </div>
+                <!-- <a href="#" class="btn-download">
+                    <i class='bx bxs-cloud-download' ></i>
+                    <span class="text">Download PDF</span>
+                </a> -->
             </div>
-            <div class="records table-responsive">
-                <div class="record-header">
-                    <form method="GET" action="{% url 'user_list' %}"></form>
-                    <div class="input-box">
-                        <i class="las la-search"></i>
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-book-open' ></i>
+                    <span class="text">
+                        <h3>{{ total_customers }}</h3>
+                        <p>Total Clients</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-calendar-check' ></i>
+                    <span class="text">
+                        <h3>{{ total_therapists }}</h3>
+                        <p>Total Therapist</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-dollar-circle' ></i>
+                    <span class="text">
+                        <h3>{{ total_educators }}</h3>
+                        <p>Total Educator</p>
+                    </span>
+                </li>
+            </ul>
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>User Details</h3>
+                        <div class="input-box">
                             <input type="text" name="q" id="search-input" placeholder="Search here..." autocomplete="off" />
+                        </div>
+                        <div class="filter-dropdown" id="role-filter-dropdown">
+                            <select id="role-filter">
+                                <option value="">All</option>
+                                <option value="therapist">Therapist</option>
+                                <option value="educator">Educator</option>
+                                <option value="employee">Employee</option>
+                                <option value="customer">Customer</option>
+                            </select>
+                        </div>
+
+                        <a href="{% url 'add_user' %}"><span><i class='bx bx-plus' ></i></span></a>
                     </div>
-                    </form>
-                    <div class="filter">
-                        <label for="role_filter">Filter by Role:</label>
-                        <select name="role_filter" id="role_filter">
-                            <option value="">All</option>
-                            <option value="therapist">Therapist</option>
-                            <option value="educator">Educator</option>
-                            <option value="employee">Employee</option>
-                            <option value="customer">Customer</option>
-                        </select>
-                    </div>
-                    <div class="add">
-                        <button><a href="{% url 'add_user' %}    ">Add User</a></button>
-                    </div> 
-                </div>
-                <div>
-                    <table width="100%" id="user-table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>USERNAME</th>
                                 <th>NAME</th>
-                                <th>EMAIL</th>
                                 <th>ROLE</th>
                                 <th>ACTIONS</th>
                             </tr>
@@ -161,69 +152,147 @@
                             <tr>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.first_name }} {{ user.last_name }}</td>
-                                <td>{{ user.email }}</td>
                                 <td>
-                                    {% if user.is_therapist %}
-                                        Therapist
-                                    {% elif user.is_educator %}
-                                        Educator
-                                    {% elif user.is_employee %}
-                                        Employee
-                                    {% elif user.is_customer %}
-                                        Customer
-                                    {% endif %}
+                                {% if user.is_therapist %}
+                                    Therapist
+                                {% elif user.is_educator %}
+                                    Educator
+                                {% elif user.is_employee %}
+                                    Employee
+                                {% elif user.is_customer %}
+                                    Customer
+                                {% endif %}
                                 </td>
                                 <td>
                                     <div class="actions">
-                                        <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure you want to delete this user?');">
+                                        <div class="actions">
+                                            <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure you want to delete this service?');">
                                             <span class="las la-trash"></span></a>
-                                        <a href="{% url 'edit_user' user.id %}"><span class="las la-edit"></span></a>
-                                        <a href=""><span class="las la-eye"></span></a>
+                                            <a href="{% url 'edit_user' user.id %}">
+                                            <span class="las la-edit"></span></a>
+                                            <a href="#" onclick="openModal('{{ user.username }}', '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.email }}', '{{ user.birthdate }}', '{{ user.profile_picture_url }}')">
+                                                <span class="las la-eye"></span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
-                            {% endfor %}
+                            {% endfor %}     
                         </tbody>
                     </table>
                 </div>
             </div>
-        </main> 
-    </div>
+            <!-- Modal -->
+            <div id="userModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="modal-content">
+                    <img id="userProfilePicture" src="" alt="Profile Picture" style="width: 150px; height: 150px;">
+                    <p>Username: <span id="userUsername"></span></p>
+                    <p>First Name: <span id="userFirstname"></span></p>
+                    <p>Last Name: <span id="userLastname"></span></p>
+                    <p>Email: <span id="userEmail"></span></p>
+                    <p>Birthday: <span id="userBirthday"></span></p>
+                </div>
+            </div>
+        </main>
+    </section>
 
     <script>
+        const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+        allSideMenu.forEach(item=> {
+            const li = item.parentElement;
+
+            item.addEventListener('click', function () {
+                allSideMenu.forEach(i=> {
+                    i.parentElement.classList.remove('active');
+                })
+                li.classList.add('active');
+            })
+        });
+
+        // TOGGLE SIDEBAR
+        const menuBar = document.querySelector('#content nav .bx.bx-menu');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBar.addEventListener('click', function () {
+            sidebar.classList.toggle('hide');
+        })
+
+        const switchMode = document.getElementById('switch-mode');
+
+        switchMode.addEventListener('change', function () {
+            if(this.checked) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        })
+
+        // search
         const searchInput = document.getElementById('search-input');
-        const roleFilter = document.getElementById('role_filter');
-        const userTable = document.getElementById('user-table');
-        const originalRows = Array.from(userTable.querySelectorAll('tbody tr')); 
+        const serviceTable = document.querySelector('.table-data table');
+        const originalRows = Array.from(serviceTable.querySelectorAll('tbody tr'));
 
         searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredRows = originalRows.filter(row => {
-                const usernameCell = row.querySelector('td:first-child');
-                const nameCell = row.querySelector('td:nth-child(2)');
-                const username = usernameCell.textContent.toLowerCase();
-                const name = nameCell.textContent.toLowerCase();
-                return username.includes(searchTerm) || name.includes(searchTerm);
-            });
-            userTable.querySelector('tbody').innerHTML = ''; 
-            filteredRows.forEach(row => userTable.querySelector('tbody').appendChild(row));
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredRows = originalRows.filter(row => {
+            const usernameCell = row.querySelector('td:first-child'); 
+            const username = usernameCell.textContent.toLowerCase();
+            const nameCell = row.querySelector('td:nth-child(2)');
+            const name = nameCell.textContent.toLowerCase();
+            return username.includes(searchTerm) || name.includes(searchTerm);
         });
+        serviceTable.querySelector('tbody').innerHTML = ''; 
+        filteredRows.forEach(row => serviceTable.querySelector('tbody').appendChild(row));
+        });
+
+
+        // filter
+        const roleFilter = document.getElementById('role-filter'); 
 
         roleFilter.addEventListener('change', () => {
-            const selectedRole = roleFilter.value.toLowerCase();
+            const selectedRole = roleFilter.value;
             const filteredRows = originalRows.filter(row => {
-                const roleCell = row.querySelector('td:nth-child(4)');
-                const role = roleCell.textContent.trim().toLowerCase();
-                return selectedRole === '' || role === selectedRole;
+                const roleCell = row.querySelector('td:nth-child(3)'); 
+                const role = roleCell.textContent.trim(); 
+                return selectedRole === '' || role.toLowerCase() === selectedRole; 
             });
-
-            // Clear the table body
-            userTable.querySelector('tbody').innerHTML = '';
-
-            // Re-add the filtered rows to the table
-            filteredRows.forEach(row => userTable.querySelector('tbody').appendChild(row));
+            updateTable(filteredRows);
         });
-    </script>
 
+        function updateTable(filteredRows) {
+            const tableHeader = serviceTable.querySelector('thead');
+            serviceTable.innerHTML = ''; 
+            serviceTable.appendChild(tableHeader); 
+
+            const tableBody = document.createElement('tbody');
+            filteredRows.forEach(row => tableBody.appendChild(row));
+            serviceTable.appendChild(tableBody);
+        }
+
+
+       // Modal Functions
+       const serviceModal = document.getElementById('userModal');
+        const userUsername = document.getElementById('userUsername');
+        const userFirstname = document.getElementById('userFirstname');
+        const userLastname = document.getElementById('userLastname');
+        const userEmail = document.getElementById('userEmail');
+        const userBirthday = document.getElementById('userBirthday');
+
+        function openModal(username, first_name, last_name, email, birthdate, profilePicture) {
+        userUsername.textContent = username;
+        userFirstname.textContent = first_name;
+        userLastname.textContent = last_name;
+        userEmail.textContent = email;
+        userBirthday.textContent = birthdate;
+        document.getElementById('userProfilePicture').src = profilePicture ? profilePicture : 'path/to/default/picture.jpg';
+        serviceModal.style.display = 'block';
+}
+
+        function closeModal() {
+            serviceModal.style.display = 'none';
+        }
+    </script>
+    
 </body>
 </html>

@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	<!-- My CSS -->
+	<link rel="stylesheet" href="{% static 'customer_style.css' %}">
+    
+
+	<title>Customer Page</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	{% include 'customer/sidebar.html' %}
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		{% include 'customer/nav.html' %}
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			
+
+			<ul class="box-info">
+				<h1>Book an appointment with a therapist</h1>
+
+			</ul>
+
+
+			<div class="table-data">
+				<div id="calendar"></div>
+                <div id="booking-modal" class="modal" style="display: none;"> <!-- Keep this hidden initially -->
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span>
+                        <h3>Book an Appointment for <span id="selected-date"></span></h3>
+                        
+                        <form id="booking-form">
+                            <input type="hidden" id="user-id" value="{{ user.id }}"> <!-- Hidden input for user ID -->
+                
+                            <label for="service-select">Select a Service:</label>
+                            <select id="service-select" required>
+                                <option value="">-- Select a Service --</option>
+                                {% for service in services %}
+                                    <option value="{{ service.id }}">{{ service.name }}</option>
+                                {% endfor %}
+                                <!-- Populate with actual service options dynamically -->
+                            </select>
+                
+                            <label for="time-slot">Select a time slot:</label>
+                            <select id="time-slot" required>
+                                <option value="09:00">09:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="13:00">01:00 PM</option>
+                                <option value="14:00">02:00 PM</option>
+                                <option value="15:00">03:00 PM</option>
+                            </select>
+                
+                            <button type="submit">Book Now</button>
+                        </form>
+                    </div>
+                </div>
+			</div>
+
+            <script>
+                $(document).ready(function() {
+                    function adjustCalendarHeight() {
+                        $('#calendar').fullCalendar('option', 'height', $(window).height() - 150); // Adjust height dynamically
+                    }
+            
+                    $('#calendar').fullCalendar({
+                        header: {
+                            left: 'month, list',
+                            center: 'title',
+                            right: 'today, prev, next'
+                        },
+                        buttonText: {
+                            today: 'Today',
+                            month: 'Month',
+                            list: 'List'
+                        },
+                        height: $(window).height() - 150, // Set initial height
+            
+                        // Disable Sundays
+                        validRange: function(nowDate) {
+                            return {
+                                start: nowDate, // Disable dates before today
+                                daysOfWeek: [0] // Disable all Sundays (index 0 is Sunday)
+                            };
+                        },
+            
+                        // Triggered when a day is clicked
+                        dayClick: function(date, jsEvent, view) {
+                            // Prevent booking on Sundays
+                            if (date.day() === 0) {
+                                alert('You cannot book an appointment on Sundays.');
+                                return false; // Prevent further action on Sundays
+                            }
+                            openBookingModal(date.format());
+                        },
+            
+                        // Highlight day cells when hovered over, but only for available days
+                        dayRender: function(date, cell) {
+                            if (date.day() !== 0) { // Only apply hover effect on available days (not Sundays)
+                                cell.on('mouseenter', function() {
+                                    $(this).css('background-color', '#e0f7fa'); // Highlight color on hover
+                                }).on('mouseleave', function() {
+                                    $(this).css('background-color', ''); // Reset color on mouse leave
+                                });
+                            } else {
+                                // Add "Not Available" notice on Sundays
+                                cell.addClass('not-available'); // Add a custom class for styling
+                                cell.append('<div class="not-available-text">Not Available</div>'); // Add the notice text
+                            }
+                        },
+            
+                        // Event triggered when a window resize happens
+                        windowResize: adjustCalendarHeight
+                    });
+            
+                    // Adjust the calendar height when the window is resized
+                    $(window).resize(adjustCalendarHeight);
+            
+                    // Open the booking modal
+                    function openBookingModal(date) {
+                        $('#selected-date').text(date); // Show the selected date in the modal
+                        $('#booking-modal').css('display', 'flex'); // Show the modal
+                    }
+            
+                    // Close the modal when clicking the 'x' button
+                    $('.close-btn').on('click', function() {
+                        $('#booking-modal').css('display', 'none');
+                    });
+            
+                    // Handle form submission for booking
+                    $('#booking-form').on('submit', function(event) {
+                event.preventDefault();
+                const selectedTime = $('#time-slot').val();
+                const selectedDate = $('#selected-date').text();
+                const userId = $('#user-id').val(); // Get the user ID from the hidden input
+                const serviceId = $('#service-select').val(); // Get the service ID from the service-select dropdown
+
+                // Prepare data for AJAX request
+                const bookingData = {
+                    date: selectedDate,
+                    time: selectedTime,
+                    user_id: userId, // Include user ID if needed
+                    service_id: serviceId, // Include service ID
+                    csrfmiddlewaretoken: '{{ csrf_token }}' // Include CSRF token for security
+                };
+
+                // Send the booking data to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/book_appointment/',  // URL to your booking endpoint
+                    data: bookingData,
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            // Add the event to FullCalendar
+                            const bookingDateTime = new Date(`${selectedDate}T${selectedTime}`);
+                            $('#calendar').fullCalendar('renderEvent', {
+                                title: 'User Booking',
+                                start: bookingDateTime
+                            });
+                        } else {
+                            alert('Error booking appointment: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while booking the appointment.');
+                    }
+                });
+
+                // Hide the modal after the request
+                $('#booking-modal').css('display', 'none');
+                    });
+                });
+            </script>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	
+</body>
+</html>

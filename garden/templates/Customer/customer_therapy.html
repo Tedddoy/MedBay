@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="{% static 'customerstyle.css' %}">
+    
+
+	<title>Customer Page</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	{% include 'customer/sidebar.html' %}
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		{% include 'customer/nav.html' %}
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+                
+                
+            </div>
+
+			<ul class="box-info">
+				
+            
+			</ul>
+
+
+			<div class="table-data">
+                <!-- Classes to enroll section -->
+               
+            
+                <!-- Enrolled classes table section -->
+                <div class="enrolled-classes-section">
+                    <h2>Your Therapy Sessions</h2>
+                    <table class="enrolled-classes-table">
+                        <thead>
+                            <tr>
+                                <th>Therapy Session Name</th>
+                                <th>Category</th>
+                                <th>Enrollment Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enrolled_class in enrolled_classes %}
+                                <tr>
+                                    <td>{{ enrolled_class.name }}</td>
+                                    <td>{{ enrolled_class.category }}</td>
+                                    <td>{{ enrolled_class.enrollment_date }}</td>
+                                    <td>{{ enrolled_class.status }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">You have no Therapy Sessions.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+            
+
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	
+</body>
+</html>

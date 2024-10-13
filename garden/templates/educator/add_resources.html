@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Resources</title>
+</head>
+<body>
+    <h1>Add Resources</h1>
+    <form method="POST" action="{% url 'add_resources' %}">
+        {% csrf_token %}
+        <label for="resource_name">Resource Name:</label>
+        <input type="text" name="resource_name" id="resource_name" required>
+
+        <label for="resource_type">Resource Type:</label>
+        <input type="text" name="resource_type" id="resource_type" required>
+
+        <label for="availability">Availability:</label>
+        <select name="availability" id="availability">
+            <option value="True">Available</option>
+            <option value="False">Not Available</option>
+        </select>
+
+        <button type="submit">Add Resource</button>
+    </form>
+</body>
+</html>

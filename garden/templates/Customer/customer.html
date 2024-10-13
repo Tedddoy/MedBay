@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="{% static 'customerstyle.css' %}">
+
+	<title>Customer Page</title>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	{% include 'customer/sidebar.html' %}
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		{% include 'customer/nav.html' %}
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Dashboard</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Welcome to Medbay!</h3>
+						<button id="editProfileBtn" class="btn-edit">Edit</button> <!-- Edit Button -->
+					</div>
+					<div class="personal-details">
+						<!-- Display Profile Picture -->
+						{% if user.profile_picture %}
+							<img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+						{% else %}
+							<img src="{% static 'default_profile_picture.png' %}" alt="Default Profile Picture" class="profile-pic"> <!-- Default Image -->
+						{% endif %}
+						<h1><span class="label" style="color:#888">Full Name:</span> <span class="name">{{ user.first_name }} {{ user.last_name }}</span></h1>
+						<h1><span class="label" style="color:#888">Username:</span> <span class="name">{{ user.username }}</span></h1>
+						<h1><span class="label" style="color:#888">Email:</span> <span class="name">{{ user.email }}</span></h1>
+						<h1><span class="label" style="color:#888">Birthdate:</span> <span class="name">{% if user.birthdate %} {{ user.birthdate }} {% else %} Update birthday {% endif %}</span></h1>
+						<h1><span class="label" style="color:#888">Client ID:</span> <span class="name">{{ user.id }}</span></h1>
+						<h1><span class="label" style="color:#888">Join Date:</span> <span class="name">{{ user.date_joined|date:"F d, Y" }}</span></h1>
+						<h1><span class="label" style="color:#888">Parent/Guardian:</span> <span class="name"> <!-- Add parent/guardian info here --></span></h1>
+					</div>
+				</div>
+			</div>
+
+			<!-- Edit Profile Modal -->
+			<div id="editProfileModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h2>Edit Details</h2>
+					<form method="POST" action="{% url 'edit_profile' user.id %}" enctype="multipart/form-data">
+						{% csrf_token %}
+						
+						<div class="form-group">
+							<label for="first_name">First Name:</label>
+							<input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="last_name">Last Name:</label>
+							<input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="username">Username:</label>
+							<input type="text" id="username" name="username" value="{{ user.username }}" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="email" id="email" name="email" value="{{ user.email }}" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="birthdate">Birthdate:</label>
+							<input type="date" id="birthdate" name="birthdate" value="{% if user.birthdate %}{{ user.birthdate|date:'Y-m-d' }}{% endif %}" required>
+							  
+						</div>
+						
+						<div class="form-group">
+							<label for="profile_picture">Profile Picture:</label>
+							<input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+						</div>
+						
+						<button type="submit" class="btn-save">Save Changes</button>
+					</form>
+				</div>
+			</div>
+		</main>
+
+		<!-- Modal Script -->
+		<script>
+			// Modal script
+			var modal = document.getElementById("editProfileModal");
+			var btn = document.getElementById("editProfileBtn");
+			var span = document.getElementsByClassName("close")[0];
+
+			btn.onclick = function() {
+				modal.style.display = "block";
+			}
+
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			}
+		</script>
+
+		<!-- Styles -->
+		<style>
+			
+
+			.modal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0,0,0,0.4);
+			}
+
+			.modal-content {
+				background-color: #fff;
+				margin: 5% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 90%;
+				max-width: 600px;
+				border-radius: 10px;
+				box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+			}
+
+			.close {
+				color: #aaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.close:hover, .close:focus {
+				color: black;
+				cursor: pointer;
+			}
+
+			.form-group {
+				display: flex;
+				flex-direction: column;
+				margin-bottom: 15px;
+			}
+
+			.form-group label {
+				margin-bottom: 5px;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			.form-group input {
+				padding: 10px;
+				font-size: 16px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+
+			.btn-edit {
+				background-color: #1599ea;
+				color: white;
+				padding: 10px 20px;
+				border: none;
+				cursor: pointer;
+				border-radius: 5px;
+			}
+
+			.btn-save {
+				background-color: #1599ea;
+				color: white;
+				padding: 10px 20px;
+				border: none;
+				cursor: pointer;
+				border-radius: 5px;
+				margin-top: 10px;
+			}
+
+			.name {
+				color: black;
+			}
+
+		</style>
+
+	</section>
+	<!-- CONTENT -->
+</body>
+</html>

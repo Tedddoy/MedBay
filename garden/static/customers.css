@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600&display=swap');
 
 :root {
     --main-color: #22BAA0;
@@ -12,7 +12,7 @@
     text-decoration: none;
     list-style-type: none;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Merriweather', sans-serif;
 }
 
 #menu-toggle {
@@ -266,6 +266,46 @@ main {
 .page-content {
     padding: 1.3rem 1rem;
     background: #f1f4f9;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#calendar {
+    width: 100%;
+    max-width: 1650px; /* You can adjust this value */
+    height: calc(100vh - 100px); /* Adjust height relative to the viewport height */
+    margin: 0 auto;
+    background-color: white; /* Optional: set a background color */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: add a shadow for better visuals */
+    padding: 20px; /* Optional: add padding */
+    border-radius: 10px; /* Optional: rounded corners */
+}
+.fc-day-header {
+    font-size: 1.6rem; /* Adjust as needed */
+}
+
+.fc-event-title {
+    font-size: 1rem; /* Adjust as needed */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Adjust the text for the days in Month view (number of the day in the box) */
+.fc-day-number {
+    font-size: 1.5rem; /* Adjust as needed */
+    font-weight: bold;
+}
+
+/* Adjust button text (Today, Month, Week, etc.) */
+.fc-button {
+    font-size: 1.5rem; /* Adjust as needed */
+}
+
+/* Adjust the text in the agenda view (time slots, events) */
+.fc-agenda-view .fc-time,
+.fc-agenda-view .fc-event-title {
+    font-size: 1.5rem; /* Adjust as needed */
 }
 
 .analytics {
@@ -344,9 +384,57 @@ main {
 .record-header {
     padding: 1rem;
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+}
+
+.add, .browse {
+    display: flex;
+    align-items: center;
+}
+
+.add span {
+    display: inline-block;
+    margin-right: .6rem;
+    font-size: .9rem;
+    color: #666;
+}
+
+.add a{
+    color: black;
+}
+
+input, button, select {
+    outline: none;
+}
+
+.add select, .browse input, .browse select {
+    height: 35px;
+    border: 1px solid #b0b0b0;
+    border-radius: 3px;
+    display: inline-block;
+    width: 75px;
+    padding: 0rem .5rem;
+    margin-right: .8rem;
+    color: #666;
+}
+
+.add button {
+    background: var(--main-color);
+    color: #fff;
+    height: 37px;
+    border-radius: 4px;
+    padding: 0rem 1rem;
+    border: none;
+    font-weight: 600;
+}
+
+.browse input {
+    width: 150px;
+}
+
+.browse select {
+    width: 100px;
 }
 
 .table-responsive {
@@ -420,90 +508,15 @@ table tbody tr {
     color:  #555;
 }
 
-.add{
-    margin: 5px 40px;
-}
-
-.add a{
-    color: black;
-    font-weight: 500;
-}
-
-.add button {
-    background: var(--main-color);
-    color: #fff;
-    height: 37px;
-    border-radius: 4px;
-    padding: 0rem 1rem;
-    border: none;
+.paid {
+    display: inline-block;
+    text-align: center;
     font-weight: 600;
-}
-
-.input-box {
-    position: relative;
-    height: 40px;
-    max-width: 400px;
-    width: 100%;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid #EDEDED;
-}
-
-.input-box i, .input-box .button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-  
-.input-box i {
-    left: 20px;
-    font-size: 30px;
-    color: #707070;
-}
-  
-.input-box input {
-    height: 100%;
-    width: 100%;
-    outline: none;
-    font-size: 14;
-    font-weight: 400;
-    border: none;
-    padding: 0 155px 0 65px;
-    background-color: transparent;
-}
-  
-.input-box .button {
-    right: 20px;
-    font-size: 13px;
-    font-weight: 400;
-    color: #fff;
-    border: none;
-    padding: 3px 15px;
-    border-radius: 6px;
-    background-color: #4070f4;
-    cursor: pointer;
-}
-  
-.input-box .button:active {
-    transform: translateY(-50%) scale(0.98);
-}
-
-.filter {
-    display: flex;
-    align-items: center;
-    margin-top: 4px;
-}
-  
-.filter label {
-    margin-right: 0.5rem;
-}
-  
-.filter select {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 15px;
+    color: var(--main-color);
+    background: #e5f8ed;
+    padding: .5rem 1rem;
+    border-radius: 20px;
+    font-size: .8rem;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -563,32 +576,78 @@ table tbody tr {
 	.add, .browse {
 		margin-left: 10px;
 	}
-    .input-box {
-        height: 66px;
-        margin: 0 8px;
-      }
-      .input-box i {
-        left: 12px;
-        font-size: 25px;
-      }
-      .input-box input {
-        padding: 0 112px 0 50px;
-      }
-      .input-box .button {
-        right: 12px;
-        font-size: 14px;
-        padding: 8px 18px;
-      }
 }
 
 
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    display: flex; /* Use flexbox to center the modal */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
 
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%; /* Adjust width as needed */
+    max-width: 500px; /* Set a max width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.fc-day:hover {
+    border: 2px solid #00796b; /* Add a greenish border on hover */
+    cursor: pointer;
+}
 
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
 
+.profile-picture {
+    margin-right: 20px;
+}
 
+.profile-picture img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
+.profile-info h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
 
-
-
+.profile-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #666;
+}
 
